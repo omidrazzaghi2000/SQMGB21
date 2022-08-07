@@ -42,7 +42,7 @@ public class admin_panel extends javax.swing.JFrame {
         System.out.println("START");
         try {
             // db parameters  
-            String url = "jdbc:sqlite:C:\\Users\\IP3\\OneDrive\\Documents\\NetBeansProjects\\Guiproject\\src\\my_package\\smane_database.db";
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
             // create a connection to the database  
             conn = DriverManager.getConnection(url);
 
@@ -325,7 +325,7 @@ public class admin_panel extends javax.swing.JFrame {
         System.out.println("START");
         try {
             // db parameters  
-            String url = "jdbc:sqlite:C:\\Users\\IP3\\OneDrive\\Documents\\NetBeansProjects\\Guiproject\\src\\my_package\\smane_database.db";
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
             // create a connection to the database  
             conn = DriverManager.getConnection(url);
 
@@ -368,7 +368,7 @@ public class admin_panel extends javax.swing.JFrame {
         System.out.println("START");
         try {
             // db parameters  
-            String url = "jdbc:sqlite:C:\\Users\\IP3\\OneDrive\\Documents\\NetBeansProjects\\Guiproject\\src\\my_package\\smane_database.db";
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
             // create a connection to the database  
             conn = DriverManager.getConnection(url);
 

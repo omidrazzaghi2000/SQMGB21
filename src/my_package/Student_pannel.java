@@ -30,12 +30,22 @@ import javax.swing.table.TableModel;
 public class Student_pannel extends javax.swing.JFrame {
     
     String ChoosenDate = "";
+    public static String studentUserName = "";
     /**
      * Creates new form Student_pannel
      */
-    public Student_pannel() {
+    public Student_pannel(String sun) {
         initComponents();
+        studentUserName = sun;
         date_label.setText(ChoosenDate);
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        
+        JalaliDatePicker jalaliDatePicker2 = new JalaliDatePicker(frame);
+        ChoosenDate = jalaliDatePicker2.getYear()+"."+jalaliDatePicker2.getMonth()+"."+jalaliDatePicker2.getDay();
+        date_label.setText(ChoosenDate);
+        update_table();
+        
     }
 
     /**
@@ -402,7 +412,57 @@ public class Student_pannel extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
         // TODO add your handling code here:
+//        String.valueOf(admin_table.getValueAt(rowSelected, 0))
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+                    int rowSelected = student_food_table.getSelectedRow();
+                    String foodID = String.valueOf(student_food_table.getValueAt(rowSelected, 0));
+                    String query = "";
+                    switch(meal_combo.getSelectedIndex())
+                    {
+                        case 1:/*صبحانه*/
+                            query = "INSERT OR replace INTO Reserves (username_id,breakfast,lunch,dinner) VALUES ("+studentUserName+","+foodID+",(SELECT lunch from Reserves WHERE username_id="+studentUserName+"),(SELECT dinner from Reserves WHERE username_id="+studentUserName+"))";
+                            break;
+                        case 2:/*ناهار*/
+                            query = "INSERT OR replace INTO Reserves (username_id,breakfast,lunch,dinner) VALUES ("+studentUserName+",(SELECT breakfast from Reserves WHERE username_id="+studentUserName+"),"+foodID+",(SELECT dinner from Reserves WHERE username_id="+studentUserName+"))";
+                            break;
+                        case 3:/*شام*/
+                            query = "INSERT OR replace INTO Reserves (username_id,breakfast,lunch,dinner) VALUES ("+studentUserName+",(SELECT breakfast from Reserves WHERE username_id="+studentUserName+"),(SELECT lunch from Reserves WHERE username_id="+studentUserName+"),"+foodID+")";
+                            break;
+
+                    }
+
+                    try (Statement stmt = conn.createStatement()) {
+                        stmt.executeUpdate(query);
+                  
+
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -410,11 +470,10 @@ public class Student_pannel extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
 
             JFrame frame = new JFrame();
-
             frame.setLayout(new BorderLayout());
-
             JalaliDatePicker jalaliDatePicker = new JalaliDatePicker(frame);
             jalaliDatePicker.setDatePickerDialogSize(600, 300);
+            System.out.println(jalaliDatePicker.getDay());
 
             jalaliDatePicker.addDateChangeListener(
                             (newYear, newMonth, newDay)->
@@ -423,7 +482,6 @@ public class Student_pannel extends javax.swing.JFrame {
                             });
 
             frame.add(jalaliDatePicker, BorderLayout.CENTER);
-
             JButton setDateButton = new JButton("ثبت تاريخ");
             frame.add(setDateButton, BorderLayout.SOUTH);
 
@@ -438,8 +496,7 @@ public class Student_pannel extends javax.swing.JFrame {
                 public void actionPerformed(ActionEvent e) {
                     frame.setVisible(false);/*بستن فريم انتخاب تاريخ*/
                     date_label.setText(ChoosenDate);
-                    
-                    
+                    update_table();
                 }
             });
         });
@@ -498,7 +555,7 @@ public class Student_pannel extends javax.swing.JFrame {
             Vector columnNames = new Vector();
 
             // Get the column names
-            for (int column = 1; column < numberOfColumns; column++) {
+            for (int column = 0; column < numberOfColumns; column++) {
                 columnNames.addElement(metaData.getColumnLabel(column + 1));
             }
 
@@ -508,7 +565,7 @@ public class Student_pannel extends javax.swing.JFrame {
             while (rs.next()) {
                 Vector newRow = new Vector();
 
-                for (int i = 2; i <= numberOfColumns; i++) {
+                for (int i = 1; i <= numberOfColumns; i++) {
                     newRow.addElement(rs.getObject(i));
                 }
 
@@ -561,7 +618,7 @@ public class Student_pannel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Student_pannel().setVisible(true);
+                new Student_pannel("9623053").setVisible(true);
             }
         });
     }
