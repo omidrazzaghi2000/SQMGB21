@@ -45,9 +45,45 @@ public class Student_pannel extends javax.swing.JFrame {
         ChoosenDate = jalaliDatePicker2.getYear()+"."+jalaliDatePicker2.getMonth()+"."+jalaliDatePicker2.getDay();
         date_label.setText(ChoosenDate);
         update_table();
-        
-    }
 
+    }
+    
+       public void updateReportTable(){
+           report_date_label.setText(ChoosenDate);
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+                    
+                    String query = "SELECT * from (SELECT username_id,name,date,self,type,meal from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = "+studentUserName;
+                    try (Statement stmt = conn.createStatement()) {
+                        ResultSet rs = stmt.executeQuery(query);
+                        student_report_table.setModel(resultSetToTableModel(rs));
+                            
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
+       }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,10 +118,10 @@ public class Student_pannel extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        student_report_table = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        report_date_label = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -97,6 +133,11 @@ public class Student_pannel extends javax.swing.JFrame {
 
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jTabbedPane1.setForeground(new java.awt.Color(51, 51, 51));
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
 
         jLabel6.setForeground(new java.awt.Color(0, 51, 255));
         jLabel6.setText("تاریخ:");
@@ -286,12 +327,9 @@ public class Student_pannel extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("افرایش اعتبار", jPanel2);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        student_report_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "غذا", "قیمت", "روز", "وعده", "حذف"
@@ -312,16 +350,20 @@ public class Student_pannel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(student_report_table);
 
         jButton3.setBackground(new java.awt.Color(255, 255, 51));
-        jButton3.setText("اعمال تغییرات");
+        jButton3.setText("حذف");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel11.setForeground(new java.awt.Color(0, 102, 255));
         jLabel11.setText("تاریخ:");
 
-        jLabel12.setForeground(new java.awt.Color(0, 102, 255));
-        jLabel12.setText("00/00/00");
+        report_date_label.setForeground(new java.awt.Color(0, 102, 255));
 
         jLabel13.setForeground(new java.awt.Color(0, 102, 255));
         jLabel13.setText("اعتبار:");
@@ -337,7 +379,7 @@ public class Student_pannel extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
+                .addContainerGap(134, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -345,7 +387,7 @@ public class Student_pannel extends javax.swing.JFrame {
                         .addComponent(jButton3)
                         .addGap(34, 34, 34))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
+                        .addComponent(report_date_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
                         .addGap(31, 31, 31))
@@ -370,7 +412,7 @@ public class Student_pannel extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(jLabel12))
+                            .addComponent(report_date_label))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
@@ -413,8 +455,6 @@ public class Student_pannel extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        // TODO add your handling code here:
-//        String.valueOf(admin_table.getValueAt(rowSelected, 0))
         Connection conn = null;
         System.out.println("START");
         try {
@@ -431,6 +471,11 @@ public class Student_pannel extends javax.swing.JFrame {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
                     int rowSelected = student_food_table.getSelectedRow();
+                    if(rowSelected == -1)
+                    {
+                        conn.close();
+                        return;
+                    }
                     String foodID = String.valueOf(student_food_table.getValueAt(rowSelected, 0));
                     String query = "";
                     switch(meal_combo.getSelectedIndex())
@@ -506,6 +551,67 @@ public class Student_pannel extends javax.swing.JFrame {
         // TODO add your handling code here:
         update_table();
     }//GEN-LAST:event_meal_comboActionPerformed
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+        updateReportTable();
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        /* حذف */
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+                    int rowSelected = student_report_table.getSelectedRow();
+                    if(rowSelected == -1)
+                    {
+                        conn.close();
+                        return;
+                    }
+                    String query = "";
+                    switch(Integer.parseInt(String.valueOf(student_report_table.getValueAt(rowSelected, 5))))
+                    {
+                        case 1:/*صبحانه*/
+                            query = "UPDATE Reserves  SET breakfast = NULL where username_id="+studentUserName;
+                            break;
+                        case 2:/*ناهار*/
+                            query = "UPDATE Reserves  SET lunch = NULL where username_id="+studentUserName;
+                            break;
+                        case 3:/*شام*/
+                            query = "UPDATE Reserves  SET dinner = NULL where username_id="+studentUserName;
+                            break;
+
+                    }
+
+                    try (Statement stmt = conn.createStatement()) {
+                        stmt.executeUpdate(query);
+                        updateReportTable();
+                            
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public void update_table() {
         /**
@@ -632,7 +738,6 @@ public class Student_pannel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -650,11 +755,12 @@ public class Student_pannel extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JComboBox meal_combo;
+    private javax.swing.JLabel report_date_label;
     private javax.swing.JTable student_food_table;
+    private javax.swing.JTable student_report_table;
     // End of variables declaration//GEN-END:variables
 }
