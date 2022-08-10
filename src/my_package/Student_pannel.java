@@ -29,12 +29,13 @@ import javax.swing.table.TableModel;
  * @author Sahra
  */
 public class Student_pannel extends javax.swing.JFrame {
-    
+
     String ChoosenDate = "";
     public static String studentUserName = "";
     public static int studentCredit = 0;
     public static boolean isStart = false;
     public static int formerFoodPrice = 0;
+
     /**
      * Creates new form Student_pannel
      */
@@ -44,18 +45,18 @@ public class Student_pannel extends javax.swing.JFrame {
         date_label.setText(ChoosenDate);
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
-        
+
         JalaliDatePicker jalaliDatePicker2 = new JalaliDatePicker(frame);
-        ChoosenDate = jalaliDatePicker2.getYear()+"."+jalaliDatePicker2.getMonth()+"."+jalaliDatePicker2.getDay();
+        ChoosenDate = jalaliDatePicker2.getYear() + "." + jalaliDatePicker2.getMonth() + "." + jalaliDatePicker2.getDay();
         date_label.setText(ChoosenDate);
         update_table();
-        isStart=true;
+        isStart = true;
         updateCredit();
 
     }
-    
-       public void updateReportTable(){
-           report_date_label.setText(ChoosenDate);
+
+    public void updateReportTable() {
+        report_date_label.setText(ChoosenDate);
         Connection conn = null;
         System.out.println("START");
         try {
@@ -71,12 +72,12 @@ public class Student_pannel extends javax.swing.JFrame {
             try {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
-                    
-                    String query = "SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = "+studentUserName;
-                    try (Statement stmt = conn.createStatement()) {
+
+                    String query = "SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = " + studentUserName;
+                    try ( Statement stmt = conn.createStatement()) {
                         ResultSet rs = stmt.executeQuery(query);
                         student_report_table.setModel(resultSetToTableModel(rs));
-                            
+
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -89,7 +90,8 @@ public class Student_pannel extends javax.swing.JFrame {
             }
 
         }
-       }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,7 +114,7 @@ public class Student_pannel extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         radio_btn_guest = new javax.swing.JRadioButton();
         jLabel10 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        guest_username = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -231,7 +233,7 @@ public class Student_pannel extends javax.swing.JFrame {
                         .addGap(2, 2, 2)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(guest_username, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(student_credit_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -258,7 +260,7 @@ public class Student_pannel extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
                         .addComponent(jLabel10)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(guest_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -460,83 +462,115 @@ public class Student_pannel extends javax.swing.JFrame {
     }//GEN-LAST:event_radio_btn_guestActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        Connection conn = null;
-        System.out.println("START");
-        try {
-            // db parameters  
-            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
-            // create a connection to the database  
-            conn = DriverManager.getConnection(url);
-
-            System.out.println("Connection to SQLite has been established.");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
+        if (radio_btn_guest.isSelected()) {
+           /*مهمان کردن دانشجو هاي ديگر*/
+           /*اول چک کنيم ببينم چنين دانشجويي وجود داره بعد از اعتبار همين دانشجو کم کنيم و به رزرو اون دانشجو اضافه کنيم.*/
+           Connection conn = null;
+            System.out.println("START");
             try {
-                if (conn != null) {
+                // db parameters  
+                String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+                // create a connection to the database  
+                conn = DriverManager.getConnection(url);
+
+                System.out.println("Connection to SQLite has been established.");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    if (conn != null) {
 //                    ٍهمه چی اوکیه
-                    int rowSelected = student_food_table.getSelectedRow();
-                    if(rowSelected == -1)
-                    {
+                        
+                        try (Statement stmt = conn.createStatement()){
+                            ResultSet rs = stmt.executeQuery("SELECT * from Users WHERE username = "+guest_username.getText());
+                            if(rs.next() == false){
+                                JOptionPane.showMessageDialog(this, "شماره دانشجويي مهمان درست نيست.");    
+                            }else{
+                                JOptionPane.showMessageDialog(this, "شماره دانشجويي درسته");
+                            }
+                            
+
+                        } catch (SQLException e) {
+                            
+                        }
+
                         conn.close();
-                        return;
                     }
-                    String foodID = String.valueOf(student_food_table.getValueAt(rowSelected, 0));
-                    String query = "";
-                    int foodPrice = Integer.parseInt(String.valueOf(student_food_table.getValueAt(rowSelected, 6)));
-                    if(foodPrice > studentCredit)
-                    {
-                        conn.close();
-                        JOptionPane.showMessageDialog(this, "اعتبار کافي نيست");
-                        return;
-                    }
-                    switch(meal_combo.getSelectedIndex())
-                    {
-                        case 1:/*صبحانه*/
-                            query = "INSERT OR replace INTO Reserves (reserve_date,username_id,breakfast,lunch,dinner) VALUES (\""+ChoosenDate+"\","+studentUserName+","+foodID+",(SELECT lunch from Reserves WHERE username_id="+studentUserName+" AND reserve_date=\""+ChoosenDate+"\"),(SELECT dinner from Reserves WHERE username_id="+studentUserName+"  AND reserve_date=\""+ChoosenDate+"\"))";
-                            break;
-                        case 2:/*ناهار*/
-                            query = "INSERT OR replace INTO Reserves (reserve_date,username_id,breakfast,lunch,dinner) VALUES (\""+ChoosenDate+"\","+studentUserName+",(SELECT breakfast from Reserves WHERE username_id="+studentUserName+" AND reserve_date=\""+ChoosenDate+"\"),"+foodID+",(SELECT dinner from Reserves WHERE username_id="+studentUserName+" AND reserve_date=\""+ChoosenDate+"\"))";
-                            break;
-                        case 3:/*شام*/
-                            query = "INSERT OR replace INTO Reserves (reserve_date,username_id,breakfast,lunch,dinner) VALUES (\""+ChoosenDate+"\","+studentUserName+",(SELECT breakfast from Reserves WHERE username_id="+studentUserName+" AND reserve_date=\""+ChoosenDate+"\"),(SELECT lunch from Reserves WHERE username_id="+studentUserName+" AND reserve_date=\""+ChoosenDate+"\"),"+foodID+")";
-                            break;
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
 
-                    }
-                    String getFormerFoodPriceQuery = "SELECT price FROM (SELECT * FROM (SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = "+studentUserName+")) WHERE meal = "+meal_combo.getSelectedIndex();
-                    try (Statement stmt = conn.createStatement()) {
-                        
-                        ResultSet rs = stmt.executeQuery(getFormerFoodPriceQuery);
-                        formerFoodPrice = 0;
-                        formerFoodPrice = rs.getInt("price");
-                        System.out.println(formerFoodPrice);
-                        
-                        
-                        
-
-                    } catch (SQLException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    try (Statement stmt = conn.createStatement()) {
-                        
-                        stmt.executeUpdate(query);
-                        
-                        
-                        
-
-                    } catch (SQLException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    updateCredit();
-
-                    conn.close();
                 }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
 
             }
+        } else {
+            Connection conn = null;
+            System.out.println("START");
+            try {
+                // db parameters  
+                String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+                // create a connection to the database  
+                conn = DriverManager.getConnection(url);
 
+                System.out.println("Connection to SQLite has been established.");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    if (conn != null) {
+//                    ٍهمه چی اوکیه
+                        int rowSelected = student_food_table.getSelectedRow();
+                        if (rowSelected == -1) {
+                            conn.close();
+                            return;
+                        }
+                        String foodID = String.valueOf(student_food_table.getValueAt(rowSelected, 0));
+                        String query = "";
+                        int foodPrice = Integer.parseInt(String.valueOf(student_food_table.getValueAt(rowSelected, 6)));
+                        if (foodPrice > studentCredit) {
+                            conn.close();
+                            JOptionPane.showMessageDialog(this, "اعتبار کافي نيست");
+                            return;
+                        }
+                        switch (meal_combo.getSelectedIndex()) {
+                            case 1:/*صبحانه*/
+                                query = "INSERT OR replace INTO Reserves (reserve_date,username_id,breakfast,lunch,dinner) VALUES (\"" + ChoosenDate + "\"," + studentUserName + "," + foodID + ",(SELECT lunch from Reserves WHERE username_id=" + studentUserName + " AND reserve_date=\"" + ChoosenDate + "\"),(SELECT dinner from Reserves WHERE username_id=" + studentUserName + "  AND reserve_date=\"" + ChoosenDate + "\"))";
+                                break;
+                            case 2:/*ناهار*/
+                                query = "INSERT OR replace INTO Reserves (reserve_date,username_id,breakfast,lunch,dinner) VALUES (\"" + ChoosenDate + "\"," + studentUserName + ",(SELECT breakfast from Reserves WHERE username_id=" + studentUserName + " AND reserve_date=\"" + ChoosenDate + "\")," + foodID + ",(SELECT dinner from Reserves WHERE username_id=" + studentUserName + " AND reserve_date=\"" + ChoosenDate + "\"))";
+                                break;
+                            case 3:/*شام*/
+                                query = "INSERT OR replace INTO Reserves (reserve_date,username_id,breakfast,lunch,dinner) VALUES (\"" + ChoosenDate + "\"," + studentUserName + ",(SELECT breakfast from Reserves WHERE username_id=" + studentUserName + " AND reserve_date=\"" + ChoosenDate + "\"),(SELECT lunch from Reserves WHERE username_id=" + studentUserName + " AND reserve_date=\"" + ChoosenDate + "\")," + foodID + ")";
+                                break;
+
+                        }
+                        String getFormerFoodPriceQuery = "SELECT price FROM (SELECT * FROM (SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = " + studentUserName + ")) WHERE meal = " + meal_combo.getSelectedIndex();
+                        try ( Statement stmt = conn.createStatement()) {
+
+                            ResultSet rs = stmt.executeQuery(getFormerFoodPriceQuery);
+                            formerFoodPrice = 0;
+                            formerFoodPrice = rs.getInt("price");
+                            System.out.println(formerFoodPrice);
+
+                        } catch (SQLException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        try ( Statement stmt = conn.createStatement()) {
+
+                            stmt.executeUpdate(query);
+
+                        } catch (SQLException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        updateCredit();
+
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+
+                }
+
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -551,10 +585,10 @@ public class Student_pannel extends javax.swing.JFrame {
             System.out.println(jalaliDatePicker.getDay());
 
             jalaliDatePicker.addDateChangeListener(
-                            (newYear, newMonth, newDay)->
-                            {
-                                ChoosenDate = newYear+"."+ newMonth+"."+ newDay;
-                            });
+                    (newYear, newMonth, newDay)
+                    -> {
+                ChoosenDate = newYear + "." + newMonth + "." + newDay;
+            });
 
             frame.add(jalaliDatePicker, BorderLayout.CENTER);
             JButton setDateButton = new JButton("ثبت تاريخ");
@@ -605,34 +639,31 @@ public class Student_pannel extends javax.swing.JFrame {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
                     int rowSelected = student_report_table.getSelectedRow();
-                    if(rowSelected == -1)
-                    {
+                    if (rowSelected == -1) {
                         conn.close();
                         return;
                     }
                     String query = "";
-                    switch(Integer.parseInt(String.valueOf(student_report_table.getValueAt(rowSelected, 5))))
-                    {
+                    switch (Integer.parseInt(String.valueOf(student_report_table.getValueAt(rowSelected, 5)))) {
                         case 1:/*صبحانه*/
-                            query = "UPDATE Reserves  SET breakfast = NULL where username_id="+studentUserName;
+                            query = "UPDATE Reserves  SET breakfast = NULL where username_id=" + studentUserName;
                             break;
                         case 2:/*ناهار*/
-                            query = "UPDATE Reserves  SET lunch = NULL where username_id="+studentUserName;
+                            query = "UPDATE Reserves  SET lunch = NULL where username_id=" + studentUserName;
                             break;
                         case 3:/*شام*/
-                            query = "UPDATE Reserves  SET dinner = NULL where username_id="+studentUserName;
+                            query = "UPDATE Reserves  SET dinner = NULL where username_id=" + studentUserName;
                             break;
 
                     }
-                    
 
-                    try (Statement stmt = conn.createStatement()) {
+                    try ( Statement stmt = conn.createStatement()) {
                         stmt.executeUpdate(query);
                         studentCredit = studentCredit + Integer.parseInt(String.valueOf(student_report_table.getValueAt(rowSelected, 6)));
                         updateReportTable();
-                        stmt.executeUpdate("UPDATE Users SET credit = "+studentCredit+" WHERE username="+studentUserName);
-                        student_credit_label.setText(""+studentCredit);
-                        student_credit_label_2.setText(""+studentCredit);    
+                        stmt.executeUpdate("UPDATE Users SET credit = " + studentCredit + " WHERE username=" + studentUserName);
+                        student_credit_label.setText("" + studentCredit);
+                        student_credit_label_2.setText("" + studentCredit);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -650,8 +681,7 @@ public class Student_pannel extends javax.swing.JFrame {
     public void update_table() {
         /**
          * ********************
-         * Connect to Database 
-         **********************
+         * Connect to Database *********************
          */
         Connection conn = null;
         System.out.println("START");
@@ -668,17 +698,16 @@ public class Student_pannel extends javax.swing.JFrame {
             try {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
-                    String query = "SELECT * FROM Foods WHERE Foods.date = \""+ChoosenDate+"\" and Foods.meal = "+meal_combo.getSelectedIndex();
-                    try (Statement stmt = conn.createStatement()) {
-                        
+                    String query = "SELECT * FROM Foods WHERE Foods.date = \"" + ChoosenDate + "\" and Foods.meal = " + meal_combo.getSelectedIndex();
+                    try ( Statement stmt = conn.createStatement()) {
+
                         ResultSet rs = stmt.executeQuery(query);
                         student_food_table.setModel(resultSetToTableModel(rs));
-                        
+
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
-                    
-                    
+
                     conn.close();
                 }
             } catch (SQLException ex) {
@@ -688,13 +717,11 @@ public class Student_pannel extends javax.swing.JFrame {
 
         }
     }
-    
-    public void updateCredit()
-    {
+
+    public void updateCredit() {
         /**
          * ********************
-         * Connect to Database 
-         **********************
+         * Connect to Database *********************
          */
         Connection conn = null;
         System.out.println("START");
@@ -712,51 +739,46 @@ public class Student_pannel extends javax.swing.JFrame {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
                     /*آپديت کردن اعتبار*/
-                    
-                    
-                    
-                    String query = "SELECT credit from Users WHERE username="+studentUserName;
-                    try(Statement stmt = conn.createStatement()){
+
+                    String query = "SELECT credit from Users WHERE username=" + studentUserName;
+                    try ( Statement stmt = conn.createStatement()) {
                         ResultSet rs = stmt.executeQuery(query);
-                        
+
                         studentCredit = rs.getInt("credit");
-                    }catch(SQLException e){
-                        System.out.println(e.getMessage());
-                    }
-                    
-                    query = "SELECT SUM(price) FROM (SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = "+studentUserName+")";
-                    String getFormerFoodPriceQuery = "SELECT price FROM (SELECT * FROM (SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = "+studentUserName+" UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = "+studentUserName+")) WHERE meal = "+meal_combo.getSelectedIndex();
-                    int selectedRow = student_food_table.getSelectedRow();
-                    int currentFoodPrice = 0;
-                    if (selectedRow != -1)
-                    {
-                    currentFoodPrice = Integer.parseInt(String.valueOf(student_food_table.getValueAt(selectedRow, 6)));                        
-                    }
-                    try (Statement stmt = conn.createStatement()) {
-                        ResultSet rs = stmt.executeQuery(query);
-                        int sum = rs.getInt("SUM(price)");
-                        
-                        System.out.println(formerFoodPrice);
-                        System.out.println(currentFoodPrice);
-                        System.out.println(studentCredit);
-                        System.out.println(sum);
-                        if(isStart){
-//                            studentCredit = studentCredit-sum;
-                            isStart = false;
-                        }else{
-                            studentCredit = studentCredit-currentFoodPrice+formerFoodPrice;
-                        }
-                        
-                        
-                        String queryUpdate = "UPDATE Users SET credit = "+studentCredit+" WHERE username = "+studentUserName;
-                        stmt.executeUpdate(queryUpdate);
-                        student_credit_label.setText(""+studentCredit);
-                        student_credit_label_2.setText(""+studentCredit);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
 
-                    
+                    query = "SELECT SUM(price) FROM (SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = " + studentUserName + ")";
+                    String getFormerFoodPriceQuery = "SELECT price FROM (SELECT * FROM (SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.breakfast WHERE Reserves.breakfast = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.lunch WHERE Reserves.lunch = Foods.id) where username_id = " + studentUserName + " UNION SELECT * from (SELECT username_id,name,date,self,type,meal,price from Reserves INNER JOIN Foods on Reserves.dinner WHERE Reserves.dinner = Foods.id) where username_id = " + studentUserName + ")) WHERE meal = " + meal_combo.getSelectedIndex();
+                    int selectedRow = student_food_table.getSelectedRow();
+                    int currentFoodPrice = 0;
+                    if (selectedRow != -1) {
+                        currentFoodPrice = Integer.parseInt(String.valueOf(student_food_table.getValueAt(selectedRow, 6)));
+                    }
+                    try ( Statement stmt = conn.createStatement()) {
+                        ResultSet rs = stmt.executeQuery(query);
+                        int sum = rs.getInt("SUM(price)");
+
+                        System.out.println(formerFoodPrice);
+                        System.out.println(currentFoodPrice);
+                        System.out.println(studentCredit);
+                        System.out.println(sum);
+                        if (isStart) {
+//                            studentCredit = studentCredit-sum;
+                            isStart = false;
+                        } else {
+                            studentCredit = studentCredit - currentFoodPrice + formerFoodPrice;
+                        }
+
+                        String queryUpdate = "UPDATE Users SET credit = " + studentCredit + " WHERE username = " + studentUserName;
+                        stmt.executeUpdate(queryUpdate);
+                        student_credit_label.setText("" + studentCredit);
+                        student_credit_label_2.setText("" + studentCredit);
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+
                     conn.close();
                 }
             } catch (SQLException ex) {
@@ -766,7 +788,7 @@ public class Student_pannel extends javax.swing.JFrame {
 
         }
     }
-    
+
     public static TableModel resultSetToTableModel(ResultSet rs) {
         try {
             ResultSetMetaData metaData = rs.getMetaData();
@@ -807,6 +829,7 @@ public class Student_pannel extends javax.swing.JFrame {
             return null;
         }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -844,6 +867,7 @@ public class Student_pannel extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel date_label;
+    private javax.swing.JTextField guest_username;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -867,7 +891,6 @@ public class Student_pannel extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JComboBox meal_combo;
     private javax.swing.JRadioButton radio_btn_guest;
     private javax.swing.JLabel report_date_label;
