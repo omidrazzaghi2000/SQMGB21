@@ -118,9 +118,9 @@ public class Student_pannel extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        increaseCredit_textEdit = new javax.swing.JTextField();
+        increaseTextEdit = new javax.swing.JButton();
+        student_credit_label_3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -273,11 +273,16 @@ public class Student_pannel extends javax.swing.JFrame {
 
         jLabel2.setText("مبلغ اعتبار خود را وارد کنید:");
 
-        jButton1.setBackground(new java.awt.Color(0, 255, 0));
-        jButton1.setText("افزایش اعتبار");
+        increaseTextEdit.setBackground(new java.awt.Color(0, 255, 0));
+        increaseTextEdit.setText("افزایش اعتبار");
+        increaseTextEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                increaseTextEditActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setForeground(new java.awt.Color(51, 102, 255));
-        jLabel4.setText("0");
+        student_credit_label_3.setForeground(new java.awt.Color(51, 102, 255));
+        student_credit_label_3.setText("0");
 
         jLabel5.setForeground(new java.awt.Color(51, 102, 255));
         jLabel5.setText("اعتبار:");
@@ -290,17 +295,17 @@ public class Student_pannel extends javax.swing.JFrame {
                 .addContainerGap(212, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(increaseCredit_textEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
                         .addComponent(jLabel2)
                         .addGap(151, 151, 151))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(student_credit_label_3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addGap(35, 35, 35))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(increaseTextEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(279, 279, 279))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -309,13 +314,13 @@ public class Student_pannel extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(student_credit_label_3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(increaseCredit_textEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(increaseTextEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73))
         );
 
@@ -460,13 +465,13 @@ public class Student_pannel extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(this, "شماره دانشجويي مهمان درست نيست.");
                                 return;
                             } else {
-                                System.out.println("omid");
+                                
                                 int rowSelected = student_food_table.getSelectedRow();
                                 if (rowSelected == -1) {
                                     conn.close();
                                     return;
                                 }
-                                System.out.println("omid");
+                                
 
                                 String foodID = String.valueOf(student_food_table.getValueAt(rowSelected, 0));
                                 String query = "";
@@ -476,7 +481,7 @@ public class Student_pannel extends javax.swing.JFrame {
                                     JOptionPane.showMessageDialog(this, "اعتبار کافي نيست");
                                     return;
                                 }
-                                System.out.println("omid");
+                                
 
                                 /*چک کنيم که مهمان غذا نداشته باشه*/
                                 String checkQuery = "SELECT * FROM Reserves WHERE reserve_date = \""+ChoosenDate+"\" AND username_id = "+guest_username.getText()+" AND ";
@@ -492,13 +497,13 @@ public class Student_pannel extends javax.swing.JFrame {
                                         break;
 
                                 }
-                                System.out.println("navid");
+                                
                                 System.out.println(checkQuery);
                                 
                                 ResultSet r = stmt.executeQuery(checkQuery);
                                 
                                 
-                                System.out.println("navid");
+                                
                                 if(r.next() != false){
                                     /*غذا داشته پس ديگه نمي خواد*/
                                     conn.close();
@@ -525,6 +530,7 @@ public class Student_pannel extends javax.swing.JFrame {
                                 stmt.executeUpdate(updateCreditQuery);
                                 student_credit_label.setText("" + studentCredit);
                                 student_credit_label_2.setText("" + studentCredit);
+                                student_credit_label_3.setText("" + studentCredit);
                             }
 
                         } catch (SQLException e) {
@@ -717,6 +723,48 @@ public class Student_pannel extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void increaseTextEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseTextEditActionPerformed
+        // TODO add your handling code here:
+        /* افزايش اعتبار */
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+
+                   
+                    try ( Statement stmt = conn.createStatement()) {
+                        studentCredit = studentCredit + Integer.parseInt(increaseCredit_textEdit.getText());
+                        String query = "UPDATE Users SET credit = "+studentCredit +" where username= "+studentUserName;
+                        stmt.executeUpdate(query);
+                        student_credit_label.setText("" + studentCredit);
+                        student_credit_label_2.setText("" + studentCredit);
+                        student_credit_label_3.setText("" + studentCredit);
+
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
+    }//GEN-LAST:event_increaseTextEditActionPerformed
+
     public void update_table() {
         /**
          * ********************
@@ -814,6 +862,7 @@ public class Student_pannel extends javax.swing.JFrame {
                         stmt.executeUpdate(queryUpdate);
                         student_credit_label.setText("" + studentCredit);
                         student_credit_label_2.setText("" + studentCredit);
+                        student_credit_label_3.setText("" + studentCredit);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -907,7 +956,8 @@ public class Student_pannel extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel date_label;
     private javax.swing.JTextField guest_username;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField increaseCredit_textEdit;
+    private javax.swing.JButton increaseTextEdit;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -916,7 +966,6 @@ public class Student_pannel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
@@ -926,11 +975,11 @@ public class Student_pannel extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JComboBox meal_combo;
     private javax.swing.JRadioButton radio_btn_guest;
     private javax.swing.JLabel student_credit_label;
     private javax.swing.JLabel student_credit_label_2;
+    private javax.swing.JLabel student_credit_label_3;
     private javax.swing.JTable student_food_table;
     private javax.swing.JTable student_report_table;
     // End of variables declaration//GEN-END:variables
