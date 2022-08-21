@@ -21,10 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
 
 /**
  *
@@ -35,12 +33,13 @@ public class admin_panel extends javax.swing.JFrame {
     /**
      * Creates new form admin_panel
      */
-    
-    
     String ChoosenDate = "";
+
     public admin_panel() {
         initComponents();
-        update_table(3/*دانشجو ها را در جدول به ادمین نمایش میدهد*/);
+        update_table(3);/*دانشجو ها را در جدول به ادمین نمایش میدهد*/
+        update_foodTable(meal_combo_box.getSelectedIndex());
+        //meal_combo_box.
 
     }
 
@@ -65,7 +64,7 @@ public class admin_panel extends javax.swing.JFrame {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
                     String query = "SELECT * FROM Users WHERE Users.situation = " + situation;
-                    try (Statement stmt = conn.createStatement()) {
+                    try ( Statement stmt = conn.createStatement()) {
                         ResultSet rs = stmt.executeQuery(query);
                         admin_table.setModel(resultSetToTableModel(rs));
 
@@ -73,6 +72,14 @@ public class admin_panel extends javax.swing.JFrame {
 
                     }
 
+//                    String query = "SELECT * FROM Foods WHERE Foods.meal = " + meal;
+//                    try (Statement stmt = conn.createStatement()) {
+//                        ResultSet rs = stmt.executeQuery(query);
+//                        adFood_table.setModel(resultSetToTableModel(rs)); 
+//                        
+//                    } catch (SQLException e) {
+//
+//                    }
                     conn.close();
                 }
             } catch (SQLException ex) {
@@ -90,7 +97,7 @@ public class admin_panel extends javax.swing.JFrame {
             Vector columnNames = new Vector();
 
             // Get the column names
-            for (int column = 1; column < numberOfColumns; column++) {
+            for (int column = 0; column < numberOfColumns; column++) {
                 columnNames.addElement(metaData.getColumnLabel(column + 1));
             }
 
@@ -100,7 +107,7 @@ public class admin_panel extends javax.swing.JFrame {
             while (rs.next()) {
                 Vector newRow = new Vector();
 
-                for (int i = 2; i <= numberOfColumns; i++) {
+                for (int i = 1; i <= numberOfColumns; i++) {
                     newRow.addElement(rs.getObject(i));
                 }
 
@@ -135,37 +142,62 @@ public class admin_panel extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        foodTab = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         name = new javax.swing.JTextField();
-        password = new javax.swing.JTextField();
         position = new javax.swing.JTextField();
         admin_table_combo_box = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         admin_table = new javax.swing.JTable();
+        password = new javax.swing.JPasswordField();
         jPanel4 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        add_meal_button = new javax.swing.JButton();
+        remove_meal_button = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        adFood_table = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        select_meal_date = new javax.swing.JButton();
+        meal_combo_box = new javax.swing.JComboBox();
+        food_name = new javax.swing.JTextField();
+        food_price = new javax.swing.JTextField();
+        loc_comboBox = new javax.swing.JComboBox();
         jPanel5 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        adReport_table = new javax.swing.JTable();
+        adReport_button = new javax.swing.JButton();
+        date_adReport = new javax.swing.JButton();
+        adReport_comboBox = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        adReport_getUsername = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        food_number_text = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel3.setText("ادمین");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel3.setText("ادمیـن");
 
-        jTabbedPane2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        foodTab.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel2.setText("نام");
 
         jLabel4.setText("رمز");
 
         jLabel5.setText("موقعیت");
+
+        name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameActionPerformed(evt);
+            }
+        });
 
         position.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,6 +212,7 @@ public class admin_panel extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(204, 255, 255));
         jButton1.setText("اضافه کردن");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,6 +220,7 @@ public class admin_panel extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 204, 204));
         jButton2.setText("حذف");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -212,120 +246,315 @@ public class admin_panel extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(admin_table);
 
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(39, 39, 39)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addGap(39, 39, 39)
+                        .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5))
-                        .addGap(62, 62, 62)
+                        .addGap(39, 39, 39)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                            .addComponent(password)
-                            .addComponent(position))
-                        .addGap(90, 90, 90)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(admin_table_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                            .addComponent(position, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                            .addComponent(password))))
+                .addGap(46, 46, 46)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(admin_table_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(admin_table_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(admin_table_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(70, 70, 70)
+                            .addComponent(jLabel2)
+                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(position, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(57, 57, 57))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(position, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(127, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton1))))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("اضافه کردن کاربر", jPanel3);
+        foodTab.addTab("اضافه کردن کاربر", jPanel3);
 
-        jButton3.setText("انتخاب تاريخ");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        add_meal_button.setBackground(new java.awt.Color(204, 255, 255));
+        add_meal_button.setText("اضافه کردن");
+        add_meal_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                add_meal_buttonActionPerformed(evt);
             }
         });
 
-        jTextField1.setText("jTextField1");
+        remove_meal_button.setBackground(new java.awt.Color(255, 204, 204));
+        remove_meal_button.setText("حذف");
+        remove_meal_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove_meal_buttonActionPerformed(evt);
+            }
+        });
 
-        jTextField2.setText("jTextField2");
+        adFood_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jTextField3.setText("jTextField3");
+            },
+            new String [] {
+                "نام غذا", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(adFood_table);
+
+        jLabel6.setText("نام غذا");
+
+        jLabel7.setText("قیمت");
+
+        select_meal_date.setText("انتخاب تاریخ");
+        select_meal_date.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                select_meal_dateActionPerformed(evt);
+            }
+        });
+
+        meal_combo_box.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "انتخاب وعده", "صبحانه", "ناهار", "شام" }));
+        meal_combo_box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                meal_combo_boxActionPerformed(evt);
+            }
+        });
+
+        food_name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                food_nameActionPerformed(evt);
+            }
+        });
+
+        food_price.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        food_price.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                food_priceActionPerformed(evt);
+            }
+        });
+
+        loc_comboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "انتخاب سلف...", "دانشگاه", "خوابگاه" }));
+        loc_comboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loc_comboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(80, 81, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(570, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(meal_combo_box, 0, 120, Short.MAX_VALUE)
+                            .addComponent(select_meal_date, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(loc_comboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(62, 62, 62))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(food_name, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(food_price, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(add_meal_button)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(remove_meal_button)))
+                .addGap(44, 44, 44))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(305, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(select_meal_date)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(meal_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(loc_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(food_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(food_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(add_meal_button)
+                    .addComponent(remove_meal_button))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("اضافه کردن غذا", jPanel4);
+        foodTab.addTab("اضافه کردن غذا", jPanel4);
+
+        adReport_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "اسم غذا", "سلف", "تعداد"
+            }
+        ));
+        jScrollPane3.setViewportView(adReport_table);
+
+        adReport_button.setBackground(new java.awt.Color(204, 204, 255));
+        adReport_button.setText("آپديت تعداد");
+        adReport_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adReport_buttonActionPerformed(evt);
+            }
+        });
+
+        date_adReport.setText("انتخاب تاریخ");
+        date_adReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                date_adReportActionPerformed(evt);
+            }
+        });
+
+        adReport_comboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "انتخاب وعده...", "صبحانه ", "ناهار", "شام" }));
+        adReport_comboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adReport_comboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel8.setText("برای مشاهده گزارش رزرو غذای دانشجو ،فیلتر هارا حذف کنید");
+
+        jLabel9.setText("شماره دانشجویی");
+
+        jCheckBox1.setText("دیدن گزارش دانشجو");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
+        food_number_text.setEditable(false);
+        food_number_text.setText("0");
+        food_number_text.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                food_number_textActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("تعداد غذا");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 851, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel9)
+                                .addGap(18, 18, 18)
+                                .addComponent(adReport_getUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(63, 63, 63)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(date_adReport, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                                        .addComponent(adReport_comboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(adReport_button)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel8))))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(food_number_text, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 465, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addComponent(date_adReport)
+                        .addGap(18, 18, 18)
+                        .addComponent(adReport_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(jCheckBox1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(adReport_getUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(adReport_button))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(food_number_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("گزارش گیری", jPanel5);
+        foodTab.addTab("گزارش گیری", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -333,23 +562,26 @@ public class admin_panel extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addContainerGap(1105, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 858, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68))
+                .addContainerGap(49, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(foodTab, javax.swing.GroupLayout.PREFERRED_SIZE, 858, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(106, 106, 106)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 147, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(foodTab)
+                        .addContainerGap())))
         );
 
         pack();
@@ -384,7 +616,7 @@ public class admin_panel extends javax.swing.JFrame {
 
                     String query = "INSERT INTO Users (username,password,situation) VALUES (" + name.getText() + "," + password.getText() + "," + position.getText() + ")";
 
-                    try (Statement stmt = conn.createStatement()) {
+                    try ( Statement stmt = conn.createStatement()) {
                         stmt.executeUpdate(query);
                         System.out.println(Integer.parseInt(position.getText()));
                         update_table(Integer.parseInt(position.getText()));
@@ -408,7 +640,7 @@ public class admin_panel extends javax.swing.JFrame {
     }//GEN-LAST:event_positionActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         Connection conn = null;
         System.out.println("START");
         try {
@@ -425,12 +657,11 @@ public class admin_panel extends javax.swing.JFrame {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
                     int rowSelected = admin_table.getSelectedRow();
-                    
-                    String query = "DELETE FROM Users WHERE username = "+ String.valueOf(admin_table.getValueAt(rowSelected, 0));
 
-                    try (Statement stmt = conn.createStatement()) {
+                    String query = "DELETE FROM Users WHERE username = " + String.valueOf(admin_table.getValueAt(rowSelected, 0));
+
+                    try ( Statement stmt = conn.createStatement()) {
                         stmt.executeUpdate(query);
-                  
 
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
@@ -447,9 +678,171 @@ public class admin_panel extends javax.swing.JFrame {
         ((DefaultTableModel) admin_table.getModel()).removeRow(admin_table.getSelectedRow());
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-            // TODO add your handling code here:
-            SwingUtilities.invokeLater(() -> {
+    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameActionPerformed
+
+    private void food_priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_food_priceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_food_priceActionPerformed
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordActionPerformed
+
+    private void food_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_food_nameActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_food_nameActionPerformed
+
+    public void update_foodTable(int meal) {
+        /**
+         * ********************
+         * Connect to Database *******************
+         */
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+
+                    String query = "SELECT * FROM Foods WHERE meal = " + meal;
+                    try ( Statement stmt = conn.createStatement()) {
+                        ResultSet rs = stmt.executeQuery(query);
+                        adFood_table.setModel(resultSetToTableModel(rs));
+
+                    } catch (SQLException e) {
+
+                    }
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
+    }
+
+    public void update_reportTable(int meal) {
+        /**
+         * ********************
+         * Connect to Database *******************
+         */
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+
+                    String query = "";
+                    switch (meal) {
+                        case 1:
+                            query = "SELECT username_id,id,reserve_date,name,type,self,price FROM (SELECT username_id,reserve_date,breakfast FROM Reserves where reserve_date=\"" + ChoosenDate + "\" and breakfast is not null) INNER JOIN Foods ON breakfast = Foods.id";
+                            break;
+                        case 2:
+                            query = "SELECT username_id,id,reserve_date,name,type,self,price FROM (SELECT username_id,reserve_date,lunch FROM Reserves where reserve_date=\"" + ChoosenDate + "\" and lunch is not null) INNER JOIN Foods ON lunch = Foods.id";
+                            break;
+                        case 3:
+                            query = "SELECT username_id,id,reserve_date,name,type,self,price FROM (SELECT username_id,reserve_date,dinner FROM Reserves where reserve_date=\"" + ChoosenDate + "\" and dinner is not null) INNER JOIN Foods ON dinner = Foods.id";
+                            break;
+                        default:
+                            break;
+                    }
+                    if (query == "") {
+                        conn.close();
+                        return;
+                    }
+                    try ( Statement stmt = conn.createStatement()) {
+                        ResultSet rs = stmt.executeQuery(query);
+                        adReport_table.setModel(resultSetToTableModel(rs));
+
+                    } catch (SQLException e) {
+
+                    }
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
+    }
+    private void add_meal_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_meal_buttonActionPerformed
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+
+                    String query = "INSERT INTO Foods (name,price,date,meal,self) VALUES (\"" + food_name.getText() + "\"," + food_price.getText() + ",\"" + ChoosenDate + "\"," + meal_combo_box.getSelectedIndex() + "," + loc_comboBox.getSelectedIndex() + ")";
+
+                    try ( Statement stmt = conn.createStatement()) {
+                        stmt.executeUpdate(query);
+                        System.out.println(meal_combo_box.getSelectedIndex());
+                        update_table(meal_combo_box.getSelectedIndex());
+
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+            update_foodTable(meal_combo_box.getSelectedIndex());
+        }
+    }//GEN-LAST:event_add_meal_buttonActionPerformed
+
+    private void meal_combo_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meal_combo_boxActionPerformed
+        if (meal_combo_box.getSelectedIndex() == 1) {
+            update_foodTable(1);/*صبحانه را در جدول به ادمین نمایش میدهد*/
+        }
+
+        if (meal_combo_box.getSelectedIndex() == 2) {
+            update_foodTable(2);/*نهار را در جدول به ادمین نمایش میدهد*/
+        }
+
+        if (meal_combo_box.getSelectedIndex() == 3) {
+            update_foodTable(3);/*شام را در جدول به ادمین نمایش میدهد*/
+        }
+    }//GEN-LAST:event_meal_combo_boxActionPerformed
+
+    private void select_meal_dateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select_meal_dateActionPerformed
+        SwingUtilities.invokeLater(() -> {
 
             JFrame frame = new JFrame();
             frame.setLayout(new BorderLayout());
@@ -482,7 +875,213 @@ public class admin_panel extends javax.swing.JFrame {
                 }
             });
         });
-    }//GEN-LAST:event_jButton3ActionPerformed
+
+    }//GEN-LAST:event_select_meal_dateActionPerformed
+
+    private void remove_meal_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_meal_buttonActionPerformed
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+                    int rowSelected = adFood_table.getSelectedRow();
+
+                    String query = "DELETE FROM Foods WHERE name = \"" + String.valueOf(adFood_table.getValueAt(rowSelected, 0)) + "\"";
+
+                    try ( Statement stmt = conn.createStatement()) {
+                        stmt.executeUpdate(query);
+
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
+        ((DefaultTableModel) adFood_table.getModel()).removeRow(adFood_table.getSelectedRow());
+    }//GEN-LAST:event_remove_meal_buttonActionPerformed
+
+    public void update_locTable(int location) {
+        /**
+         * ********************
+         * Connect to Database *******************
+         */
+        Connection conn = null;
+        System.out.println("START");
+        try {
+            // db parameters  
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+            // create a connection to the database  
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+//                    ٍهمه چی اوکیه
+
+                    String query = "SELECT * FROM Foods WHERE self = " + location;
+                    try ( Statement stmt = conn.createStatement()) {
+                        ResultSet rs = stmt.executeQuery(query);
+                        adFood_table.setModel(resultSetToTableModel(rs));
+
+                    } catch (SQLException e) {
+
+                    }
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+
+            }
+
+        }
+    }
+    private void loc_comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loc_comboBoxActionPerformed
+        if (loc_comboBox.getSelectedIndex() == 1) {
+            update_locTable(1);/*دانشگاه را در جدول به ادمین نمایش میدهد*/
+        }
+
+        if (loc_comboBox.getSelectedIndex() == 2) {
+            update_locTable(2);/*خوابگاه را در جدول به ادمین نمایش میدهد*/
+        }
+
+    }//GEN-LAST:event_loc_comboBoxActionPerformed
+
+    private void date_adReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_date_adReportActionPerformed
+        SwingUtilities.invokeLater(() -> {
+
+            JFrame frame = new JFrame();
+            frame.setLayout(new BorderLayout());
+            JalaliDatePicker jalaliDatePicker = new JalaliDatePicker(frame);
+            jalaliDatePicker.setDatePickerDialogSize(600, 300);
+            System.out.println(jalaliDatePicker.getDay());
+
+            jalaliDatePicker.addDateChangeListener(
+                    (newYear, newMonth, newDay)
+                    -> {
+                ChoosenDate = newYear + "." + newMonth + "." + newDay;
+                System.out.println(ChoosenDate);
+            });
+
+            frame.add(jalaliDatePicker, BorderLayout.CENTER);
+            JButton setDateButton = new JButton("ثبت تاريخ");
+            frame.add(setDateButton, BorderLayout.SOUTH);
+
+            frame.setSize(250, 100);
+            frame.setResizable(false);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+            setDateButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frame.setVisible(false);/*بستن فريم انتخاب تاريخ*/
+//                    date_label.setText(ChoosenDate);
+//                    update_table();
+                }
+            });
+        });
+    }//GEN-LAST:event_date_adReportActionPerformed
+
+    private void adReport_comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adReport_comboBoxActionPerformed
+        if (adReport_comboBox.getSelectedIndex() == 1) {
+            update_reportTable(1);/*صبحانه را در جدول به ادمین نمایش میدهد*/
+        }
+
+        if (adReport_comboBox.getSelectedIndex() == 2) {
+            update_reportTable(2);/*نهار را در جدول به ادمین نمایش میدهد*/
+        }
+
+        if (adReport_comboBox.getSelectedIndex() == 3) {
+            update_reportTable(3);/*شام را در جدول به ادمین نمایش میدهد*/
+        }    }//GEN-LAST:event_adReport_comboBoxActionPerformed
+
+    private void adReport_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adReport_buttonActionPerformed
+        int rowSelected = adReport_table.getSelectedRow();
+        if (rowSelected == -1) {
+            return;
+        } else {
+            /**
+             * ********************
+             * Connect to Database *******************
+             */
+            Connection conn = null;
+            System.out.println("START");
+            try {
+                // db parameters  
+                String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+                // create a connection to the database  
+                conn = DriverManager.getConnection(url);
+
+                System.out.println("Connection to SQLite has been established.");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    if (conn != null) {
+//                    ٍهمه چی اوکیه
+
+                        String query = "";
+                        int meal = adReport_comboBox.getSelectedIndex();
+                        int selectedId = Integer.parseInt(adReport_table.getValueAt(rowSelected, 1).toString());
+                        int self = Integer.parseInt(adReport_table.getValueAt(rowSelected, 5).toString());
+                        switch (meal) {
+                        case 1:
+                            query = "SELECT count(id) FROM ((SELECT username_id,reserve_date,breakfast FROM Reserves where reserve_date=\""+ChoosenDate+"\" and breakfast is not null) INNER JOIN Foods ON breakfast = Foods.id) WHERE id = "+selectedId+" and self = "+self;
+                            break;
+                        case 2:
+                            query = "SELECT count(id) FROM ((SELECT username_id,reserve_date,lunch FROM Reserves where reserve_date=\""+ChoosenDate+"\" and lunch is not null) INNER JOIN Foods ON lunch = Foods.id) WHERE id = "+selectedId+" and self = "+self;
+                            break;
+                        case 3:
+                            query = "SELECT count(id) FROM ((SELECT username_id,reserve_date,dinner FROM Reserves where reserve_date=\""+ChoosenDate+"\" and dinner is not null) INNER JOIN Foods ON dinner = Foods.id) WHERE id = "+selectedId+" and self = "+self;
+                            break;
+                        default:
+                            break;
+                        }
+                        try ( Statement stmt = conn.createStatement()) {
+                            ResultSet rs = stmt.executeQuery(query);
+                           food_number_text.setText(rs.getString("count(id)"));
+
+                        } catch (SQLException e) {
+
+                        }
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+
+                }
+
+            }
+        }
+
+    }//GEN-LAST:event_adReport_buttonActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void food_number_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_food_number_textActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_food_number_textActionPerformed
 
     /**
      * @param args the command line arguments
@@ -522,26 +1121,44 @@ public class admin_panel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable adFood_table;
+    private javax.swing.JButton adReport_button;
+    private javax.swing.JComboBox adReport_comboBox;
+    private javax.swing.JTextField adReport_getUsername;
+    private javax.swing.JTable adReport_table;
+    private javax.swing.JButton add_meal_button;
     private javax.swing.JTable admin_table;
     private javax.swing.JComboBox admin_table_combo_box;
+    private javax.swing.JButton date_adReport;
+    private javax.swing.JTabbedPane foodTab;
+    private javax.swing.JTextField food_name;
+    private javax.swing.JTextField food_number_text;
+    private javax.swing.JTextField food_price;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JComboBox loc_comboBox;
+    private javax.swing.JComboBox meal_combo_box;
     private javax.swing.JTextField name;
-    private javax.swing.JTextField password;
+    private javax.swing.JPasswordField password;
     private javax.swing.JTextField position;
+    private javax.swing.JButton remove_meal_button;
+    private javax.swing.JButton select_meal_date;
     // End of variables declaration//GEN-END:variables
 }
