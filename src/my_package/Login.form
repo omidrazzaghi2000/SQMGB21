@@ -60,7 +60,6 @@
             <TitledBorder justification="2" title="&#x633;&#x627;&#x645;&#x627;&#x646;&#x647; &#x62a;&#x63a;&#x630;&#x6cc;&#x647;"/>
           </Border>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
 
       <Layout>

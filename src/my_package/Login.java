@@ -50,7 +50,6 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "سامانه تغذیه", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        jPanel1.setToolTipText("");
 
         jLabel1.setText("نام");
 
@@ -65,7 +64,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton1.setForeground(new java.awt.Color(102, 0, 255));
         jButton1.setText("Login");
@@ -131,13 +129,13 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         String user_name = txt_username.getText();
         String password = txt_password.getText();
-        
+
         //Connect to database
         Connection conn = null;
         System.out.println("START");
         try {
             // db parameters  
-            String url = "jdbc:sqlite:C:\\Users\\IP3\\OneDrive\\Documents\\NetBeansProjects\\Guiproject\\src\\my_package\\smane_database.db";
+            String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
             // create a connection to the database  
             conn = DriverManager.getConnection(url);
 
@@ -149,17 +147,26 @@ public class Login extends javax.swing.JFrame {
                 if (conn != null) {
 //                    ٍهمه چی اوکیه
                     String query = "SELECT * FROM Users WHERE Users.username = " + txt_username.getText() + " and Users.password=" + txt_password.getText();
-                    try (Statement stmt = conn.createStatement()) {
+                    try ( Statement stmt = conn.createStatement()) {
                         ResultSet rs = stmt.executeQuery(query);
-                        
-                         JOptionPane.showMessageDialog(this, rs.getString("situation"));
-                        if(rs.getInt("situation")==1){
-                         //admin
-                                   this.dispose();
-                                   new admin_panel().setVisible(true); 
+
+                     
+                        if (rs.getInt("situation") == 1) {
+                            //admin
+                            this.dispose();
+                            new admin_panel().setVisible(true);
+                        } else if (rs.getInt("situation") == 2) {
+                            //deliver
+                            this.dispose();
+                            new deliver_panel().setVisible(true);
+                        } else if (rs.getInt("situation") == 3) {
+                            //student
+                            this.dispose();
+                            new Student_pannel(rs.getString("username"),rs.getInt("isDormitory")).setVisible(true);
+
                         }
                     } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(this, " درست بزن");
+                        JOptionPane.showMessageDialog(this, " رمز يا نام کاربري نادرست است.");
                     }
                     conn.close();
                 }
@@ -208,11 +215,10 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                new Login().setVisible(true);
-               
-        new admin_panel().setVisible(true); 
-                
-//                new Student_pannel("9623053").setVisible(true);
+                new Login().setVisible(true);
+
+//        new admin_panel().setVisible(true); 
+//                new Student_pannel("9623053", true).setVisible(true);
 
 //            new deliver_panel().setVisible(true);
             }

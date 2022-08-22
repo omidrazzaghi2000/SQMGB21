@@ -16,6 +16,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -35,13 +37,25 @@ public class Student_pannel extends javax.swing.JFrame {
     public static int studentCredit = 0;
     public static boolean isStart = false;
     public static int formerFoodPrice = 0;
+    public static boolean isDormitory = false;
 
     /**
      * Creates new form Student_pannel
      */
-    public Student_pannel(String sun) {
+    public Student_pannel(String sun,int b) {
         initComponents();
         studentUserName = sun;
+        
+        /* چک کنيم اگه دانشجو خوابگاهي باشه يا نه */
+        if(b == 1){
+            isDormitory = true;
+        }else{
+            isDormitory = false;
+        }
+        
+        
+        
+        
         date_label.setText(ChoosenDate);
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
@@ -657,7 +671,12 @@ public class Student_pannel extends javax.swing.JFrame {
 
     private void meal_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meal_comboActionPerformed
         // TODO add your handling code here:
+        if(meal_combo.getSelectedIndex() != 2 && !isDormitory){
+            JOptionPane.showMessageDialog(this,"رزرو صبحانه و شام فقط براي دانشجويان خوابگاهي است.");
+            return;
+        }
         update_table();
+        
     }//GEN-LAST:event_meal_comboActionPerformed
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
@@ -770,6 +789,7 @@ public class Student_pannel extends javax.swing.JFrame {
          * ********************
          * Connect to Database *********************
          */
+        
         Connection conn = null;
         System.out.println("START");
         try {
@@ -948,7 +968,7 @@ public class Student_pannel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Student_pannel("9623053").setVisible(true);
+                new Student_pannel("9623053",1).setVisible(true);
             }
         });
     }
