@@ -31,6 +31,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
+<<<<<<< HEAD
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="jButton3" min="-2" max="-2" attributes="0"/>
@@ -44,6 +45,13 @@
                               <Component id="jButton4" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+=======
+                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="meal_combo" min="-2" pref="124" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="filter_combo_box" min="-2" max="-2" attributes="0"/>
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
                       <EmptySpace pref="18" max="32767" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="522" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
@@ -58,6 +66,7 @@
               <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+<<<<<<< HEAD
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -67,6 +76,13 @@
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+=======
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="meal_combo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="filter_combo_box" alignment="3" min="-2" max="-2" attributes="0"/>
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="270" max="-2" attributes="0"/>
               </Group>
@@ -83,7 +99,11 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
+<<<<<<< HEAD
         <Component class="javax.swing.JTable" name="jTable1">
+=======
+        <Component class="javax.swing.JTable" name="deliver_panel_food_table">
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="5" rowCount="0">
@@ -110,8 +130,16 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x627;&#x646;&#x62a;&#x62e;&#x627;&#x628; &#x62a;&#x627;&#x631;&#x6cc;&#x62e;"/>
       </Properties>
+<<<<<<< HEAD
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBox1">
+=======
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="meal_combo">
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
@@ -122,8 +150,16 @@
           </StringArray>
         </Property>
       </Properties>
+<<<<<<< HEAD
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBox2">
+=======
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="meal_comboActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="filter_combo_box">
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="5">
@@ -135,6 +171,7 @@
           </StringArray>
         </Property>
       </Properties>
+<<<<<<< HEAD
     </Component>
     <Component class="javax.swing.JButton" name="jButton4">
       <Properties>
@@ -143,6 +180,11 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x645;&#x634;&#x627;&#x647;&#x62f;&#x647;"/>
       </Properties>
+=======
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filter_combo_boxActionPerformed"/>
+      </Events>
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
     </Component>
   </SubComponents>
 </Form>

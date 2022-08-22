@@ -218,8 +218,11 @@ public class Login extends javax.swing.JFrame {
             public void run() {
 //                new Login().setVisible(true);
                
-//        new admin_panel().setVisible(true); 
-                new Student_pannel().setVisible(true);
+        new admin_panel().setVisible(true); 
+                
+//                new Student_pannel("9623053").setVisible(true);
+
+//            new deliver_panel().setVisible(true);
             }
         });
     }

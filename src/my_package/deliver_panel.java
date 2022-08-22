@@ -5,6 +5,27 @@
  */
 package my_package;
 
+<<<<<<< HEAD
+=======
+import ir.fallahpoor.jalalidatepicker.JalaliDatePicker;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import static my_package.Student_pannel.resultSetToTableModel;
+
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
 /**
  *
  * @author IP3
@@ -14,6 +35,11 @@ public class deliver_panel extends javax.swing.JFrame {
     /**
      * Creates new form deliver_panel
      */
+<<<<<<< HEAD
+=======
+    String ChoosenDate = "";
+
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
     public deliver_panel() {
         initComponents();
     }
@@ -28,6 +54,7 @@ public class deliver_panel extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
+<<<<<<< HEAD
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -38,6 +65,17 @@ public class deliver_panel extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
+=======
+        deliver_panel_food_table = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        meal_combo = new javax.swing.JComboBox();
+        filter_combo_box = new javax.swing.JComboBox();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        deliver_panel_food_table.setModel(new javax.swing.table.DefaultTableModel(
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
             new Object [][] {
 
             },
@@ -45,12 +83,17 @@ public class deliver_panel extends javax.swing.JFrame {
                 "شماره دانشجویی", "نام غذا", "قیمت", "تعداد غذا", "نام سلف"
             }
         ));
+<<<<<<< HEAD
         jScrollPane1.setViewportView(jTable1);
+=======
+        jScrollPane1.setViewportView(deliver_panel_food_table);
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("توزیع کننده غذا");
 
         jButton3.setText("انتخاب تاریخ");
+<<<<<<< HEAD
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "انتخاب وعده...", "صبحانه ", "ناهار", "شام" }));
 
@@ -58,6 +101,27 @@ public class deliver_panel extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(204, 204, 255));
         jButton4.setText("مشاهده");
+=======
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        meal_combo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "انتخاب وعده...", "صبحانه ", "ناهار", "شام" }));
+        meal_combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                meal_comboActionPerformed(evt);
+            }
+        });
+
+        filter_combo_box.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "فیلتر...", "گزارش رزرو", "تعداد رزرو", "سلف دانشگاه", "سلف خوابگاه" }));
+        filter_combo_box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filter_combo_boxActionPerformed(evt);
+            }
+        });
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,6 +134,7 @@ public class deliver_panel extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
+<<<<<<< HEAD
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton3)
@@ -80,6 +145,13 @@ public class deliver_panel extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(142, 142, 142)
                                 .addComponent(jButton4)))
+=======
+                        .addComponent(jButton3)
+                        .addGap(18, 18, 18)
+                        .addComponent(meal_combo, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(filter_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57))))
@@ -90,6 +162,7 @@ public class deliver_panel extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addComponent(jLabel1)
                 .addGap(35, 35, 35)
+<<<<<<< HEAD
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -98,6 +171,13 @@ public class deliver_panel extends javax.swing.JFrame {
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4))
+=======
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3)
+                        .addComponent(meal_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(filter_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
@@ -105,6 +185,197 @@ public class deliver_panel extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+<<<<<<< HEAD
+=======
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        SwingUtilities.invokeLater(() -> {
+
+            JFrame frame = new JFrame();
+            frame.setLayout(new BorderLayout());
+            JalaliDatePicker jalaliDatePicker = new JalaliDatePicker(frame);
+            jalaliDatePicker.setDatePickerDialogSize(600, 300);
+            System.out.println(jalaliDatePicker.getDay());
+
+            jalaliDatePicker.addDateChangeListener(
+                    (newYear, newMonth, newDay)
+                    -> {
+                ChoosenDate = newYear + "." + newMonth + "." + newDay;
+            });
+
+            frame.add(jalaliDatePicker, BorderLayout.CENTER);
+            JButton setDateButton = new JButton("ثبت تاريخ");
+            frame.add(setDateButton, BorderLayout.SOUTH);
+
+            frame.setSize(250, 100);
+            frame.setResizable(false);
+            frame.setLocationRelativeTo(null);
+//            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+
+            setDateButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frame.setVisible(false);/*بستن فريم انتخاب تاريخ*/
+                    update_table();
+                }
+            });
+        });
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    public void update_table() {
+        if (filter_combo_box.getSelectedIndex() == 1) {
+            /**
+             * ********************
+             * Connect to Database *********************
+             */
+
+            Connection conn = null;
+            System.out.println("START");
+            try {
+                // db parameters  
+                String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+                // create a connection to the database  
+                conn = DriverManager.getConnection(url);
+
+                System.out.println("Connection to SQLite has been established.");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    if (conn != null) {
+//                    ٍهمه چی اوکیه
+                        String query = "";
+                        if (meal_combo.getSelectedIndex() == 1 /*صبحانه*/) {
+                            query = "SELECT username_id,reserve_date,breakfast FROM Reserves where reserve_date = \"" + ChoosenDate + "\" and breakfast is not NULL";
+                        } else if (meal_combo.getSelectedIndex() == 2 /*ناهار*/) {
+                            query = "SELECT username_id,reserve_date,lunch FROM Reserves where reserve_date = \"" + ChoosenDate + "\" and lunch is not NULL";
+                        } else if (meal_combo.getSelectedIndex() == 3 /*شام*/) {
+                            query = "SELECT username_id,reserve_date,dinner FROM Reserves where reserve_date = \"" + ChoosenDate + "\" and dinner is not NULL";
+                        }
+                        if (query.equals("")) {
+                            conn.close();
+                            return;
+                        }
+                        try ( Statement stmt = conn.createStatement()) {
+
+                            ResultSet rs = stmt.executeQuery(query);
+                            deliver_panel_food_table.setModel(resultSetToTableModel(rs));
+
+                        } catch (SQLException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+
+                }
+
+            }
+        } else if (filter_combo_box.getSelectedIndex() == 2) {
+            /**
+             * ********************
+             * Connect to Database *********************
+             */
+
+            Connection conn = null;
+            System.out.println("START");
+            try {
+                // db parameters  
+                String url = "jdbc:sqlite:src\\my_package\\smane_database.db";
+                // create a connection to the database  
+                conn = DriverManager.getConnection(url);
+
+                System.out.println("Connection to SQLite has been established.");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    if (conn != null) {
+//                    ٍهمه چی اوکیه
+                        String query = "";
+                        if (meal_combo.getSelectedIndex() == 1 /*صبحانه*/) {
+                            query = "SELECT COUNT(username_id) FROM Reserves where reserve_date = \"" + ChoosenDate + "\" and breakfast is not NULL";
+                        } else if (meal_combo.getSelectedIndex() == 2 /*ناهار*/) {
+                            query = "SELECT COUNT(username_id) FROM Reserves where reserve_date = \"" + ChoosenDate + "\" and lunch is not NULL";
+                        } else if (meal_combo.getSelectedIndex() == 3 /*شام*/) {
+                            query = "SELECT COUNT(username_id) FROM Reserves where reserve_date = \"" + ChoosenDate + "\" and dinner is not NULL";
+                        }
+                        if (query.equals("")) {
+                            conn.close();
+                            return;
+                        }
+                        try ( Statement stmt = conn.createStatement()) {
+
+                            ResultSet rs = stmt.executeQuery(query);
+                            deliver_panel_food_table.setModel(resultSetToTableModel(rs));
+
+                        } catch (SQLException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+
+                }
+
+            }
+        }
+    }
+
+    public static TableModel resultSetToTableModel(ResultSet rs) {
+        try {
+            ResultSetMetaData metaData = rs.getMetaData();
+            int numberOfColumns = metaData.getColumnCount();
+            Vector columnNames = new Vector();
+
+            // Get the column names
+            for (int column = 0; column < numberOfColumns; column++) {
+                columnNames.addElement(metaData.getColumnLabel(column + 1));
+            }
+
+            // Get all rows.
+            Vector rows = new Vector();
+
+            while (rs.next()) {
+                Vector newRow = new Vector();
+
+                for (int i = 1; i <= numberOfColumns; i++) {
+                    newRow.addElement(rs.getObject(i));
+                }
+
+                rows.addElement(newRow);
+            }
+            DefaultTableModel tableModel = new DefaultTableModel(rows, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    //all cells false
+                    return false;
+                }
+            };
+
+//            return new DefaultTableModel(rows, columnNames);
+            return tableModel;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    private void meal_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meal_comboActionPerformed
+        update_table();
+    }//GEN-LAST:event_meal_comboActionPerformed
+
+    private void filter_combo_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filter_combo_boxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filter_combo_boxActionPerformed
+
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
     /**
      * @param args the command line arguments
      */
@@ -141,6 +412,7 @@ public class deliver_panel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+<<<<<<< HEAD
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
@@ -148,5 +420,13 @@ public class deliver_panel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+=======
+    private javax.swing.JTable deliver_panel_food_table;
+    private javax.swing.JComboBox filter_combo_box;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox meal_combo;
+>>>>>>> a53500db6a5c0c62e03cb94cede647b68324352c
     // End of variables declaration//GEN-END:variables
 }
